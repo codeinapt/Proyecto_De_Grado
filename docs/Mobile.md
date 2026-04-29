@@ -181,6 +181,7 @@ app/src/main/java/com/example/appmesh/
 ├── network/
 │   ├── ApiService.kt   # Endpoints V2.0
 │   └── GatewayManager.kt # Lógica de Bridge Malla-Nube
+|   └── Nearby.kt # Lógica Nearby 
 └── utils/
     ├── SecurityUtils.kt # Criptografía RSA/AES
     └── PayloadHelper.kt # Protocolo de Handshake
