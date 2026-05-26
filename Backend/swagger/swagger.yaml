@@ -1,0 +1,299 @@
+openapi: 3.0.0
+info:
+  title: Red Mesh API
+  description: API Backend para el sistema de mensajería rural Red Mesh
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Servidor Local
+
+paths:
+  /api/health:
+    get:
+      summary: Endpoint de salud del servidor
+      description: Verifica que el servidor está corriendo correctamente
+      responses:
+        '200':
+          description: Servidor funcionando
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+                  message:
+                    type: string
+                    example: "Servidor Red Mesh funcionando correctamente"
+  /api/v1/users/register:
+    post:
+      summary: Registro de usuario y llave pública
+      description: Registra un nuevo usuario en el backend.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre_usuario:
+                  type: string
+                  example: "Juan_Zipa"
+                public_key:
+                  type: string
+                  example: "-----BEGIN PUBLIC KEY-----..."
+              required:
+                - nombre_usuario
+                - public_key
+      responses:
+        '201':
+          description: Usuario registrado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  user:
+                    type: object
+        '400':
+          description: Error de validación o usuario duplicado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v1/sync/up:
+    post:
+      summary: Subir mensajes del gateway a la nube
+      description: Envía un lote de mensajes cifrados desde el gateway al backend.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gateway_id:
+                  type: string
+                  example: "GW-001"
+                mensajes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      uuid_mensaje:
+                        type: string
+                      emisor_id:
+                        type: string
+                      receptor_id:
+                        type: string
+                      contenido_cifrado:
+                        type: string
+                      tipo_mensaje:
+                        type: string
+                        example: "TEXTO"
+                      contador_saltos:
+                        type: integer
+                        example: 2
+                      fecha_emision_movil:
+                        type: string
+                        format: date-time
+              required:
+                - gateway_id
+                - mensajes
+      responses:
+        '200':
+          description: Sincronización UP exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  mensajes_recibidos:
+                    type: integer
+                  mensajes_guardados_nuevos:
+                    type: integer
+        '400':
+          description: Error de solicitud
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v1/gateways/heartbeat:
+    post:
+      summary: Registrar estado del gateway
+      description: Enviar información de heartbeat del gateway al backend.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_dispositivo:
+                  type: string
+                  example: "GW-001"
+                bateria_nivel:
+                  type: integer
+                  example: 85
+                ubicacion_lat:
+                  type: number
+                  format: float
+                  example: -12.0464
+                ubicacion_lng:
+                  type: number
+                  format: float
+                  example: -77.0428
+              required:
+                - id_dispositivo
+      responses:
+        '200':
+          description: Heartbeat procesado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  gateway:
+                    type: object
+        '400':
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v1/sync/down/{gw_id}:
+    get:
+      summary: Obtener mensajes pendientes para un Gateway
+      parameters:
+        - name: gw_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Identificador del gateway
+      responses:
+        '200':
+          description: Lista de mensajes pendientes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  gateway_id:
+                    type: string
+                  mensajes_pendientes:
+                    type: integer
+                  mensajes:
+                    type: array
+                    items:
+                      type: object
+        '400':
+          description: Error de solicitud
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v1/messages/ack:
+    post:
+      summary: Confirmar la entrega de un mensaje
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uuid_mensaje:
+                  type: string
+                receptor_id:
+                  type: string
+              required:
+                - uuid_mensaje
+                - receptor_id
+      responses:
+        '200':
+          description: Mensaje confirmado como entregado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  mensaje:
+                    type: object
+        '400':
+          description: Error de validación o no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/v1/multimedia/upload:
+    post:
+      summary: Subir archivo multimedia cifrado
+      description: Recibe un archivo .enc como bytes crudos y lo relaciona con un mensaje existente.
+      parameters:
+        - name: x-mensaje-id
+          in: header
+          required: true
+          schema:
+            type: string
+          description: UUID del mensaje asociado al archivo cifrado.
+        - name: x-thumbnail-base64
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Miniatura cifrada opcional en Base64.
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '201':
+          description: Archivo cifrado almacenado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  multimedia:
+                    type: object
+        '400':
+          description: Error de validacion
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
