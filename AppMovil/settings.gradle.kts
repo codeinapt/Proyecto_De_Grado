@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MeshApp"
+rootProject.name = "Modulos"
 include(":app")

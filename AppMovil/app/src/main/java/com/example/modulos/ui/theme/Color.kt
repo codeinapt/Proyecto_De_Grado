@@ -1,4 +1,4 @@
-package com.example.meshapp.ui.theme
+package com.example.modulos.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
