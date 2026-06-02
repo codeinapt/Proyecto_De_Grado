@@ -1,0 +1,43 @@
+services:
+  # Servicio 1: Nuestro Backend Node.js
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: red-mesh-api
+    ports:
+      - "3000:3000"
+    volumes:
+      # Esto mapea nuestra carpeta local al contenedor en tiempo real
+      - .:/app
+      # Evita que la carpeta local node_modules sobrescriba la del contenedor
+      - /app/node_modules
+      # Mantiene persistentes los archivos multimedia cifrados
+      - encrypted_uploads:/app/uploads
+    env_file:
+      - .env
+    depends_on:
+      - db
+    # Permite reiniciar automáticamente si hay un error
+    restart: always
+
+  # Servicio 2: La Base de Datos PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: red-mesh-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-redmesh}
+    volumes:
+      # Hace que los datos de la BD no se borren si apagamos el contenedor
+      - pgdata:/var/lib/postgresql/data
+      # Script que crea las tablas automáticamente la primera vez
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+
+volumes:
+  pgdata:
+  encrypted_uploads:
