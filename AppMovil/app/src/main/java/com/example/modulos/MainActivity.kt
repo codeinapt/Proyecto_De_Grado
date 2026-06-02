@@ -12,6 +12,7 @@ import com.example.modulos.ui.screens.InfoScreen
 import com.example.modulos.ui.screens.MessagingScreen
 import com.example.modulos.ui.screens.RadarScreen
 import com.example.modulos.ui.screens.SettingsScreen
+import com.example.modulos.ui.screens.LogsScreen
 import com.example.modulos.ui.theme.ModulosTheme
 
 class MainActivity : ComponentActivity() {
@@ -48,12 +49,30 @@ fun MainNavigation() {
             })
         }
         composable("ajustes") {
-            SettingsScreen(onNavigate = { route ->
-                navController.navigate(route) {
-                    popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true
+            SettingsScreen(
+                onNavigate = { route ->
+                    navController.navigate(route) {
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
+                    }
+                },
+                irALogs = {
+                    navController.navigate("logs")
                 }
-            })
+            )
+        }
+        composable("logs") {
+            LogsScreen(
+                onNavigate = { route ->
+                    navController.navigate(route) {
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
+                    }
+                },
+                volverAjustes = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
