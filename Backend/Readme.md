@@ -11,18 +11,29 @@ El backend está preparado con Docker y Docker Compose para facilitar su desplie
 
 ### Opción 1: Ejecución con Docker (Recomendado)
 
-1. **Requisitos previos**: Asegúrate de tener instalado [Docker](https://www.docker.com/) y `docker-compose`.
+1. **Requisitos previos**: Asegúrate de tener instalado [Docker](https://www.docker.com/) (las versiones recientes incluyen el comando integrado `docker compose`).
 2. **Configuración de variables de entorno**: 
-   Crea un archivo `.env` en la raíz de la carpeta `Backend/` si no existe, o asegúrate de configurarlo correctamente (puedes basarte en un `.env.example` si lo hay).
-3. **Construir y levantar los contenedores**:
-   En la raíz del subdirectorio `Backend`, ejecuta el siguiente comando:
+   Asegúrate de contar con un archivo `.env` en la raíz de la carpeta `Backend/`. Puedes crearlo basándote en el archivo de ejemplo (si existe):
    ```bash
-   docker-compose up --build
+   cp .env.example .env
    ```
+3. **Construir y levantar los contenedores**:
+   En la raíz del directorio `Backend/`, ejecuta el siguiente comando para levantar el entorno en segundo plano (`-d`):
+   ```bash
+   docker compose up --build -d
+   ```
+   *(Si deseas ver los logs en tiempo real, puedes quitar el `-d` del comando).*
 4. **Verificar el servidor**:
-   - Backend disponible en: `http://localhost:3000`
-   - Documentación Swagger disponible en: `http://localhost:3000/api-docs`
-   - Endpoint de salud (Health check): `http://localhost:3000/api/health`
+   Una vez iniciados los servicios, comprueba su funcionamiento:
+   - **Backend**: `http://localhost:3000`
+   - **Documentación Swagger**: `http://localhost:3000/api-docs`
+   - **Estado (Health check)**: `http://localhost:3000/api/health`
+
+5. **Detener la ejecución**:
+   Cuando desees apagar los contenedores instalados, simplemente ejecuta:
+   ```bash
+   docker compose down
+   ```
 
 ### Opción 2: Ejecución local para desarrollo (Nativa)
 
