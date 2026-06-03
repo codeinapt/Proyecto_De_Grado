@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: red-mesh-api
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       # Esto mapea nuestra carpeta local al contenedor en tiempo real
       - .:/app
@@ -26,7 +26,7 @@ services:
     image: postgres:15-alpine
     container_name: red-mesh-db
     ports:
-      - "5432:5432"
+      - "5435:5432"
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-password}

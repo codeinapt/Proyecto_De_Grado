@@ -25,9 +25,9 @@ El backend está preparado con Docker y Docker Compose para facilitar su desplie
    *(Si deseas ver los logs en tiempo real, puedes quitar el `-d` del comando).*
 4. **Verificar el servidor**:
    Una vez iniciados los servicios, comprueba su funcionamiento:
-   - **Backend**: `http://localhost:3000`
-   - **Documentación Swagger**: `http://localhost:3000/api-docs`
-   - **Estado (Health check)**: `http://localhost:3000/api/health`
+   - **Backend**: `http://localhost:3001`
+   - **Documentación Swagger**: `http://localhost:3001/api-docs`
+   - **Estado (Health check)**: `http://localhost:3001/api/health`
 
 5. **Detener la ejecución**:
    Cuando desees apagar los contenedores instalados, simplemente ejecuta:
