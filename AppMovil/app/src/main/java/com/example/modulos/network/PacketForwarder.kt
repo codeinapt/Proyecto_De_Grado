@@ -1,3 +1,5 @@
+package com.example.modulos.network
+
 class PacketForwarder(private val nearbyManager: INearbyManager) {
 
     // Ahora recibimos el senderEndpoint para no devolverle el paquete al vecino que nos lo dio

@@ -1,3 +1,5 @@
+package com.example.modulos.network
+
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.*
 

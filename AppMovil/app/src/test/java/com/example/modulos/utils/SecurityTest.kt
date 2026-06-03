@@ -2,7 +2,7 @@
 // Verificación automática de que todo funciona correctamente
 // Reporte de estado detallado del sistema de seguridad
 
-package com.redrural.wifi.security
+package com.example.modulos.utils
 
 /**
  * Clase de prueba para verificar el funcionamiento de los componentes de seguridad

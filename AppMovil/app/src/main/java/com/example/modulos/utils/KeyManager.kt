@@ -4,7 +4,7 @@
 // Exportación/Importación de claves públicas para compartir con otros nodos
 // Persistencia de claves entre reinicios de la aplicación
 
-package com.redrural.wifi.security
+package com.example.modulos.utils
 
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec

@@ -5,7 +5,7 @@
 // Transmisión segura completa con firma y cifrado
 // Hash SHA-256 para integridad de datos
 
-package com.redrural.wifi.security
+package com.example.modulos.utils
 
 import android.util.Base64
 import java.security.PrivateKey
