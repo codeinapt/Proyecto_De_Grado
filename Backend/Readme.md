@@ -17,7 +17,7 @@ El backend está preparado con Docker y Docker Compose para facilitar su desplie
 3. **Construir y levantar los contenedores**:
    En la raíz del subdirectorio `Backend`, ejecuta el siguiente comando:
    ```bash
-   docker-compose up --build
+   docker compose build
    ```
 4. **Verificar el servidor**:
    - Backend disponible en: `http://localhost:3000`
